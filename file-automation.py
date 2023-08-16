@@ -11,7 +11,7 @@ Date: 16/08/2023
 Version: 1.0
 Dependencies: OS, Shuttle.
 """
-
+#!/usr/bin/env python3
 import os
 import shutil
 
@@ -47,22 +47,25 @@ def moveFiles(strDirPath, lstDirFiles):
     lstExeExt = ['.exe','.bat','.cmd','.com','.ps1','.vbs','.js','.jar','.py','.sh','.msi','.vs','.c']
     lstZipExt = ['.zip','.rar','.7z','.gz','.tar.gz']
 
-    print ("Moving these files: {}".format(lstDirFiles))
+    #print ("Moving these files: {}".format(lstDirFiles))
     for x in lstDirFiles:
-        if any(y in x.lower() for y in lstDocExt):
-            shutil.move(strDirPath+'/'+x, strDocPath+'/'+'Document'+'/')
-        if any(y in x.lower() for y in lstImgExt):
-            shutil.move(strDirPath+'/'+x, strDocPath+'/'+'Image'+'/')
-        if any(y in x.lower() for y in lstAudioExt):
-            shutil.move(strDirPath+'/'+x, strDocPath+'/'+'Audio'+'/')
-        if any(y in x.lower() for y in lstVideoExt):
-            shutil.move(strDirPath+'/'+x, strDocPath+'/'+'Video'+'/')
-        if any(y in x.lower() for y in lstExeExt):
-            shutil.move(strDirPath+'/'+x, strDocPath+'/'+'Exe'+'/')
-        if any(y in x.lower() for y in lstZipExt):
-            shutil.move(strDirPath+'/'+x, strDocPath+'/'+'Zip'+'/')
-        if 'Automation' not in x and '.ini' not in x and 'GitHub' not in x:
-            shutil.move(strDirPath+'/'+x, strDocPath+'/'+'Folder'+'/')
+        try:
+            if any(y in x.lower() for y in lstDocExt):
+                shutil.move(strDirPath+'/'+x, strDocPath+'/'+'Document'+'/')
+            if any(y in x.lower() for y in lstImgExt):
+                shutil.move(strDirPath+'/'+x, strDocPath+'/'+'Image'+'/')
+            if any(y in x.lower() for y in lstAudioExt):
+                shutil.move(strDirPath+'/'+x, strDocPath+'/'+'Audio'+'/')
+            if any(y in x.lower() for y in lstVideoExt):
+                shutil.move(strDirPath+'/'+x, strDocPath+'/'+'Video'+'/')
+            if any(y in x.lower() for y in lstExeExt):
+                shutil.move(strDirPath+'/'+x, strDocPath+'/'+'Exe'+'/')
+            if any(y in x.lower() for y in lstZipExt):
+                shutil.move(strDirPath+'/'+x, strDocPath+'/'+'Zip'+'/')
+            if 'Automation' not in x and '.ini' not in x and 'GitHub' not in x:
+                shutil.move(strDirPath+'/'+x, strDocPath+'/'+'Folder'+'/')
+        except Exception as e:
+            print('File not found or alreadyn moved')
 
 ##########################################################################################################################
 
@@ -72,7 +75,7 @@ def fileCheck(strDocPath, strDownloadPath):
     lstDocDirFiles = os.listdir(strDocPath)
     lstDownloadDirFiles = os.listdir(strDownloadPath)
     
-    print(lstDocDirFiles)
+    #print(lstDocDirFiles)
 
     for x in lstDownloadDirFiles:
           if x != 'Automation' and x != ' ':
@@ -90,16 +93,13 @@ def fileCheck(strDocPath, strDownloadPath):
     
 ##########################################################################################################################
 
-def main():
+
    
-   StrDocRoot = os.path.expanduser('~/Documents')
-   StrDownloadRoot = os.path.expanduser('~/Downloads')
+StrDocRoot = os.path.expanduser('~/Documents')
+StrDownloadRoot = os.path.expanduser('~/Downloads')
 
-   print(StrDocRoot)
+oStrDocPath = StrDocRoot+'/'+'Automation'+'/'
 
-   oStrDocPath = StrDocRoot+'/'+'Automation'+'/'
-   
-   folderPathCheck(oStrDocPath)
-   fileCheck(StrDocRoot, StrDownloadRoot)
+folderPathCheck(oStrDocPath)
+fileCheck(StrDocRoot, StrDownloadRoot)
 
-main()
