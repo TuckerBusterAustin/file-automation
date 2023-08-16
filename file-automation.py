@@ -1,13 +1,21 @@
-#Check for folder structure. If it doesn't exist, then create the folder structure
-#Once folder structure is verified, sort through document and download directories for new and/or 
-#files outside the automation folder
-#Sort files by file type and move them into their respective file paths(Document,Image,Audio,Video,Exe,Zip,Folders)
-#Schedule scrub 
-#Add GUI
-#Clean files
+"""
+File Automation
+
+Description: Automaticallly creates a folder structure and sorts the files in your download
+and documents folder and places them in their respective folder
+
+Usage: Run the .exe file to manage new files outside of the folder structure
+
+Author: Brian Sedano
+Date: 16/08/2023
+Version: 1.0
+Dependencies: OS, Shuttle.
+"""
 
 import os
 import shutil
+
+##########################################################################################################################
 
 def folderPathCheck(strRootFolderPath):
     print("Create folder paths")
