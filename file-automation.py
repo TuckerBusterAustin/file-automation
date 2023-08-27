@@ -14,31 +14,32 @@ Dependencies: OS, Shuttle.
 
 import os
 import shutil
+import pathlib
 
 ###################################
 #       Folder Creation           #
 ###################################
 
-def folderCheck(lstFolders,strRootPath):
+def folderCheck(lstFolders, rootPath):
     
     for x in lstFolders:
-        if os.path.exists(strRootPath+x):
-           print("Folder path {} exists".format(x))
+        folder_path = rootPath / x  
+        if folder_path.exists(): 
+            print(f"Folder path {x} exists")
         else:
-            print("Folder path {} does not exist. Creating folder path...".format(x))
-            os.makedirs(strRootPath+x)
+            print(f"Folder path {x} does not exist. Creating folder path...")
+            folder_path.mkdir(parents=True)
 
 ###################################
 #              Main               #
 ###################################
 
 #Folder path initialization
-strDesktopRoot = os.path.expanduser('~/Desktop/')
-strDocRoot = os.path.expanduser('~/Documents/')
-strDownloadRoot = os.path.expanduser('~/Downloads/')
-strPicRoot = os.path.expanduser('~/Pictures/')
-strMusicRoot = os.path.expanduser('~/Music/')
-strVideoRoot = os.path.expanduser('~/Videos/')
+docRoot = Path.home() / 'Documents'
+downloadRoot = Path.home() / 'Downloads'
+picRoot = Path.home() / 'Pictures'
+musicRoot = Path.home() / 'Music'
+videoRoot = Path.home() / 'Videos'
 
 lstRootPaths = [strDocRoot,strDownloadRoot,strPicRoot,strMusicRoot,strVideoRoot]
 
@@ -79,19 +80,17 @@ lstAllDict = [dictDocument,dictPictures,dictAudio,dictVideo]
 ###################################
 
 #Checking all paths
-for x in lstRootPaths:
-    lstAllFiles = os.listdir(x)
-    #Checking all files
-    for y in lstAllFiles:
-        strExt = y[y.rfind('.'):].lower() 
-        if len(strExt) >= 2 or len(strExt) >= 4:
-            #Checking all Dictionaries
-            for z in lstAllDict:
-                #All values inside Dictionaries
-                for key,value in z.items():
-                    #If extention in values of a key, return a key
-                    if  strExt in value:
-                        print("Moving file {}".format(y))
-                        shutil.move(x+y,str(z['Path'])+key)
-        else:
-            print('File entry is folder. Cannot move')
+for root_path in rootPaths:
+    allFiles = [x for x in root_path.iterdir()]  # Using pathlib to list files
+    
+    # Checking all files
+    for file_path in allFiles:
+        if file_path.is_file():  # Using pathlib to check if it's a file
+            ext = file_path.suffix.lower()  # Using pathlib to get the file extension
+            
+            # The rest of the logic remains the same
+            for d in allDicts:
+                for key, value in d.items():
+                    if ext in value:
+                        print(f"Moving file {file_path.name}")
+                        shutil.move(str(file_path), str(d['Path'] / key))  # Using pathlib for destination path
